@@ -40,4 +40,5 @@ public class DynamoDBConfig {
 	AWSCredentialsProvider awsCredentialsProvider() {
 		return new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey));
 	}
+	
 }
