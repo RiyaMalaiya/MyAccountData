@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.model.AccountData;
 import com.repository.AccountRepository;
 
@@ -15,14 +18,7 @@ public class AccountService {
 	private AccountRepository accountRepository;
 
 	public void postData(AccountData data) throws Exception {
-
-		AccountData datafromDB = accountRepository.getDataById(data.getProfileId());
-		if (datafromDB == null) {
 			accountRepository.postData(data);
-		} else {
-			throw new Exception("profileId exist");
-		}
-
 	}
 
 	public List<AccountData> getAllData() {
@@ -31,5 +27,9 @@ public class AccountService {
 
 	public AccountData getDataById(String id) {
 		return accountRepository.getDataById(id);
+	}
+	
+	public void updateDataById(AccountData data, String id) throws Exception {
+		accountRepository.updateDataById(data, id);
 	}
 }

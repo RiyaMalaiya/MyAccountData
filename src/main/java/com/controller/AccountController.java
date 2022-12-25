@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,11 +24,11 @@ public class AccountController {
 	@PostMapping("/saveData/{id}")
 	public ResponseEntity<String> postData(@RequestBody AccountData data, @PathVariable("id") String id) {
 		data.setProfileId(id);
-	try {
-		accountService.postData(data);
-	}catch(Exception e) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	}
+		try {
+			accountService.postData(data);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 		return ResponseEntity.status(HttpStatus.CREATED).body("Succefully created Entity");
 	}
 
@@ -41,5 +42,16 @@ public class AccountController {
 	public ResponseEntity<AccountData> getDataById(@PathVariable("id") String id) {
 		AccountData data = accountService.getDataById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(data);
+	}
+
+	@PutMapping("/updateData/{id}")
+	public ResponseEntity<String> updateDataById(@RequestBody AccountData data, @PathVariable(value = "id") String id) {
+		data.setProfileId(id);
+		try {
+			accountService.updateDataById(data, id);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Succefully updated Entity");
 	}
 }
