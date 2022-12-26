@@ -32,4 +32,8 @@ public class AccountService {
 	public void updateDataById(AccountData data, String id) throws Exception {
 		accountRepository.updateDataById(data, id);
 	}
+	
+	public void deteteData(String id) throws Exception {
+		accountRepository.deteteData(id);
+	}
 }

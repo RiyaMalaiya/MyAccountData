@@ -49,4 +49,14 @@ public class AccountRepository {
 		}
 
 	}
+
+	public void deteteData(String id) throws Exception {
+
+		AccountData datafromDB = dynamoDBMapper.load(AccountData.class, id);
+		if (datafromDB != null) {
+			dynamoDBMapper.delete(datafromDB);
+		} else {
+			throw new Exception("profileId not exist");
+		}
+	}
 }
