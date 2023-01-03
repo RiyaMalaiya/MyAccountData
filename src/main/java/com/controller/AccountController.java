@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,23 @@ public class AccountController {
 
 	@GetMapping("/getAllData")
 	public ResponseEntity<List<AccountData>> getAllData() {
-		List<AccountData> data = accountService.getAllData();
+		List<AccountData> data = new ArrayList<AccountData>();
+		try {
+			data = accountService.getAllData();
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(data);
 	}
 
 	@GetMapping("/getAllData/{id}")
 	public ResponseEntity<AccountData> getDataById(@PathVariable("id") String id) {
-		AccountData data = accountService.getDataById(id);
+		AccountData data = new AccountData();
+		try {
+		data = accountService.getDataById(id);
+	} catch (Exception e) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	}
 		return ResponseEntity.status(HttpStatus.OK).body(data);
 	}
 
@@ -55,11 +66,21 @@ public class AccountController {
 		}
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Succefully updated Entity");
 	}
-	
+
 	@DeleteMapping("/deleteData/{id}")
-	public ResponseEntity<String> deteteData( @PathVariable(value = "id") String id) {
+	public ResponseEntity<String> deteteData(@PathVariable(value = "id") String id) {
 		try {
 			accountService.deteteData(id);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Succefully deleted data for : " + id);
+	}
+
+	@DeleteMapping("/deleteAllData")
+	public ResponseEntity<String> deleteAllData() throws Exception {
+		try {
+			accountService.deleteAllData();
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}

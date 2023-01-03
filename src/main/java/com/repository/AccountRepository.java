@@ -1,6 +1,7 @@
 package com.repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -29,13 +30,20 @@ public class AccountRepository {
 
 	}
 
-	public List<AccountData> getAllData() {
+	public List<AccountData> getAllData() throws Exception {
 		List<AccountData> data = dynamoDBMapper.scan(AccountData.class, new DynamoDBScanExpression());
+		if (data == null || data.isEmpty()) {
+			throw new Exception("Data does not exist");
+		}
 		return data;
 	}
 
-	public AccountData getDataById(String id) {
-		return dynamoDBMapper.load(AccountData.class, id);
+	public AccountData getDataById(String id) throws Exception {
+		AccountData data = dynamoDBMapper.load(AccountData.class, id);
+		if (data == null) {
+			throw new Exception("Data does not exist");
+		}
+		return data;
 	}
 
 	public void updateDataById(AccountData data, String id) throws Exception {
@@ -57,6 +65,18 @@ public class AccountRepository {
 			dynamoDBMapper.delete(datafromDB);
 		} else {
 			throw new Exception("profileId not exist");
+		}
+	}
+
+	public void deleteAllData() throws Exception {
+		List<AccountData> data = dynamoDBMapper.scan(AccountData.class, new DynamoDBScanExpression());
+		if (data != null && !data.isEmpty()) {
+			List<String> idList = data.stream().map(id -> id.getProfileId()).collect(Collectors.toList());
+			for (String id : idList) {
+				dynamoDBMapper.delete(dynamoDBMapper.load(AccountData.class, id));
+			}
+		} else {
+			throw new Exception("Data does not exist");
 		}
 	}
 }
