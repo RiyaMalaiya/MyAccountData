@@ -1,0 +1,16 @@
+com\model\AccountDetails.class
+com\config\DynamoDBConfig.class
+com\Main.class
+com\controller\CognitoController.class
+com\model\AccountData.class
+com\service\CognitoClientService.class
+com\filter\JwtAuthentication.class
+com\repository\AccountRepository.class
+com\filter\JWTProcessorHelper.class
+com\model\Response.class
+com\model\Request.class
+com\filter\AwsCognitoJwtAuthenticationFilter.class
+com\config\AppConfig.class
+com\service\AccountService.class
+com\controller\AccountController.class
+com\config\SecurityConfig.class
